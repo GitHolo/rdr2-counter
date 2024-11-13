@@ -34,7 +34,13 @@
                 margin: 0;
             }
         }
-
+        .flash-red {
+            animation: flashRed 1s infinite;
+        }
+        @keyframes flashRed {
+            0%, 100% { color: white; }
+            50% { color: red; }
+        }
     </style>
 </head>
 <body>
@@ -87,6 +93,22 @@
             if (currentCount < 0) currentCount = 0;
             countElement.textContent = currentCount;
             setCookie(animal, currentCount, 30); // Store count for 30 days
+            
+            // Apply or remove the flash-red class based on the count
+            if (currentCount === 0) {
+                countElement.classList.add('flash-red');
+            } else {
+                countElement.classList.remove('flash-red');
+            }
+
+            // Set the color based on the count
+            countElement.style.color = getGreenColor(currentCount);
+        }
+
+        function getGreenColor(count) {
+            const maxCount = 10;
+            const lightness = 100 - Math.min(50, Math.floor((count / maxCount) * 50)); // Lightness from 100% to 50%
+            return `hsl(120, 100%, ${lightness}%)`;
         }
 
         function rockyComplete() {
@@ -109,6 +131,16 @@
                     setCookie(animal, newCount, 30);
                     const countElement = document.querySelector(`#${animal}CountPlus`).parentNode.querySelector('i');
                     countElement.textContent = newCount;
+                    
+                    // Apply or remove the flash-red class based on the count
+                    if (newCount === 0) {
+                        countElement.classList.add('flash-red');
+                    } else {
+                        countElement.classList.remove('flash-red');
+                    }
+
+                    // Set the color based on the count
+                    countElement.style.color = getGreenColor(newCount);
                 });
                 alert("Set completed! All counts decremented by 1.");
             } else {
@@ -123,6 +155,16 @@
                 const countElement = document.querySelector(`#${animal}CountPlus`).parentNode.querySelector('i');
                 const count = getCookie(animal) || 0;
                 countElement.textContent = count;
+                
+                // Apply or remove the flash-red class based on the count
+                if (count == 0) {
+                    countElement.classList.add('flash-red');
+                } else {
+                    countElement.classList.remove('flash-red');
+                }
+
+                // Set the color based on the count
+                countElement.style.color = getGreenColor(count);
             });
         }
 
