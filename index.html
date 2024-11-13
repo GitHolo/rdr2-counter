@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RDR2 counter</title>
+    <style>
+        body{
+            background-image: url("https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRM-68DXKEt9usZK0i1pcTASft56a2FvvHHiT3RrdeI_MCmATSC");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            align-content: center;
+            display: flex;
+            justify-content: center;
+        }
+        div{
+            background-color: rgba(0, 0, 0, 0.651);
+            width: 50%;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+        p{
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Rocky mountain</h1>
+        <p>Rocky mountain bull elk <span><i>0</i> <button id="rElkCountPlus" onclick="count('rElk', 1)">+</button><button id="rElkCountMinus" onclick="count('rElk', -1)">-</button></span></p>
+        <p>Rocky mountain cow elk <span><i>0</i> <button id="rCowElkCountPlus" onclick="count('rCowElk', 1)">+</button><button id="rCowElkCountMinus" onclick="count('rCowElk', -1)">-</button></span></p>
+        <p>American Badger <span><i>0</i> <button id="aBadgerCountPlus" onclick="count('aBadger', 1)">+</button><button id="aBadgerCountMinus" onclick="count('aBadger', -1)">-</button></span></p>
+        <p>Gray Wolf <span><i>0</i> <button id="gWolfCountPlus" onclick="count('gWolf', 1)">+</button><button id="gWolfCountMinus" onclick="count('gWolf', -1)">-</button></span></p>
+        <p>Timber Wolf <span><i>0</i> <button id="tWolfCountPlus" onclick="count('tWolf', 1)">+</button><button id="tWolfCountMinus" onclick="count('tWolf', -1)">-</button></span></p>
+        <p>Rocky Mountain Bighorn Ram <span><i>0</i> <button id="rRamCountPlus" onclick="count('rRam', 1)">+</button><button id="rRamCountMinus" onclick="count('rRam', -1)">-</button></span></p>
+        <p>Rocky Mountain Bighorn sheep <span><i>0</i> <button id="rSheepCountPlus" onclick="count('rSheep', 1)">+</button><button id="rSheepCountMinus" onclick="count('rSheep', -1)">-</button></span></p>
+        <p>California valley Coyote <span><i>0</i> <button id="CoyoteCountPlus" onclick="count('Coyote', 1)">+</button><button id="CoyoteCountMinus" onclick="count('Coyote', -1)">-</button></span></p>
+        <p>White tail buck <span><i>0</i> <button id="wTailBuckCountPlus" onclick="count('wTailBuck', 1)">+</button><button id="wTailBuckCountMinus" onclick="count('wTailBuck', -1)">-</button></span></p>
+        <p>White tail deer <span><i>0</i> <button id="wTailDeerCountPlus" onclick="count('wTailDeer', 1)">+</button><button id="wTailDeerCountMinus" onclick="count('wTailDeer', -1)">-</button></span></p>
+        <p>Wild Boar <span><i>0</i> <button id="wBoarCountPlus" onclick="count('wBoar', 1)">+</button><button id="wBoarCountMinus" onclick="count('wBoar', -1)">-</button></span></p>
+        <p>American Bison <span><i>0</i> <button id="aBisonCountPlus" onclick="count('aBison', 1)">+</button><button id="aBisonCountMinus" onclick="count('aBison', -1)">-</button></span></p>
+        <p>American Pronghorn buck <span><i>0</i> <button id="aPronghornBuckCountPlus" onclick="count('aPronghornBuck', 1)">+</button><button id="aPronghornBuckCountMinus" onclick="count('aPronghornBuck', -1)">-</button></span></p>
+        <p>American Pronghorn Doe <span><i>0</i> <button id="aPronghornDoeCountPlus" onclick="count('aPronghornDoe', 1)">+</button><button id="aPronghornDoeCountMinus" onclick="count('aPronghornDoe', -1)">-</button></span></p>
+        <button onClick="rockyComplete();">Complete a set</button>
+    </div>
+    <script>
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        function getCookie(name) {
+            const cname = name + "=";
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const ca = decodedCookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(cname) == 0) {
+                    return c.substring(cname.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function count(animal, increment) {
+            const countElement = document.querySelector(`#${animal}CountPlus`).parentNode.querySelector('i');
+            let currentCount = parseInt(getCookie(animal)) || 0;
+            currentCount += increment;
+            if (currentCount < 0) currentCount = 0;
+            countElement.textContent = currentCount;
+            setCookie(animal, currentCount, 30); // Store count for 30 days
+        }
+
+        function rockyComplete() {
+            const animals = ['rElk', 'rCowElk', 'aBadger', 'gWolf', 'tWolf', 'rRam', 'rSheep', 'Coyote', 'wTailBuck', 'wTailDeer', 'wBoar', 'aBison', 'aPronghornBuck', 'aPronghornDoe'];
+            let allZero = true;
+
+            // Check if all animals have at least 1 count
+            animals.forEach(animal => {
+                const count = parseInt(getCookie(animal)) || 0;
+                if (count < 1) {
+                    allZero = false;
+                }
+            });
+
+            if (allZero) {
+                // Decrement counts and update cookies
+                animals.forEach(animal => {
+                    const currentCount = parseInt(getCookie(animal)) || 0;
+                    const newCount = Math.max(0, currentCount - 1);
+                    setCookie(animal, newCount, 30);
+                    const countElement = document.querySelector(`#${animal}CountPlus`).parentNode.querySelector('i');
+                    countElement.textContent = newCount;
+                });
+                alert("Set completed! All counts decremented by 1.");
+            } else {
+                alert("Cannot complete set. Ensure all animals have at least 1 count.");
+            }
+        }
+
+        // Initialize counts from cookies when page loads
+        function initializeCounts() {
+            const animals = ['rElk', 'rCowElk', 'aBadger', 'gWolf', 'tWolf', 'rRam', 'rSheep', 'Coyote', 'wTailBuck', 'wTailDeer', 'wBoar', 'aBison', 'aPronghornBuck', 'aPronghornDoe'];
+            animals.forEach(animal => {
+                const countElement = document.querySelector(`#${animal}CountPlus`).parentNode.querySelector('i');
+                const count = getCookie(animal) || 0;
+                countElement.textContent = count;
+            });
+        }
+
+        // Call initializeCounts when the page loads
+        window.onload = initializeCounts;
+    </script>
+</body>
+</html>
